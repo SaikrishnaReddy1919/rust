@@ -40,6 +40,8 @@ impl Database {
             let key = chunks.next().expect("No More keys.");
             let value = chunks.next().unwrap();
 
+            //.to_string() can also be used, but not efficient check to_string vs to_owned.
+            // .clone() wont work
             map.insert(key.to_owned(), value.to_owned());
         }
 
