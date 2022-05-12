@@ -13,8 +13,10 @@ fn main() {
     // expect() -> says compiler to crash on error.
     // try removing .expect(), program wont crash.
     let database = Database::new().expect("Database must crash");
+    println!("{:?}", database);
 }
 
+#[derive(Debug)]
 struct Database {
     map: HashMap<String, String>,
 }
