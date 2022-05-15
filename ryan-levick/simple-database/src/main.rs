@@ -12,7 +12,6 @@ fn main() {
 
     database.insert(key.to_uppercase(), value.clone());
     database.insert(key, value);
-    database.flush().unwrap();
 }
 
 #[derive(Debug)]
@@ -53,7 +52,14 @@ impl Database {
         self.map.insert(key, value);
     }
 
-    fn flush(self) -> std::io::Result<()> {
+}
+
+// what if we want to call flush after inserting automatically.
+// That's where drop comes in...if we impl Drop trait for Database, we can use drop inside Drop and 
+// do whatever we want to do(the code inside flush method) inside drop method.
+
+impl Drop for Database {
+    fn drop(&mut self) {
         let mut contents = String::new();
 
         //try removing & to self.map
@@ -72,6 +78,7 @@ impl Database {
 
             
         }
-        std::fs::write("kv.db", contents)
+        // _ means -> keep the result in _ and ignore it.
+        let _ = std::fs::write("kv.db", contents);
     }
 }
